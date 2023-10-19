@@ -1,0 +1,63 @@
+apiVersion: sonataflow.org/v1alpha08
+kind: SonataFlow
+metadata:
+  annotations:
+    sonataflow.org/description: Testing parallelism
+    sonataflow.org/expressionLang: jq
+    sonataflow.org/version: "1.0"
+  creationTimestamp: null
+  labels:
+    app: parallel
+    sonataflow.org/workflow-app: parallel
+  name: parallel
+  namespace: default
+spec:
+  flow:
+    functions:
+      - name: concatA
+        operation: .result|=.+"A"
+        type: expression
+      - name: concatB
+        operation: .result|=.+"B"
+        type: expression
+      - name: concatC
+        operation: .result|=.+"C"
+        type: expression
+    start:
+      stateName: Parallel
+    states:
+      - branches:
+          - actions:
+              - actionDataFilter:
+                  useResults: true
+                functionRef:
+                  invoke: sync
+                  refName: concatA
+            name: branchA
+          - actions:
+              - actionDataFilter:
+                  useResults: true
+                functionRef:
+                  invoke: sync
+                  refName: concatB
+            name: branchB
+          - actions:
+              - actionDataFilter:
+                  useResults: true
+                functionRef:
+                  invoke: sync
+                  refName: concatC
+            name: branchC
+        completionType: atLeast
+        end:
+          terminate: true
+        name: Parallel
+        numCompleted: "2"
+        type: parallel
+  resources: {}
+  podTemplate:
+    container:
+      image: quay.io/ricardozanini/parallel:1.0
+status:
+  address: {}
+  lastTimeRecoverAttempt: null
