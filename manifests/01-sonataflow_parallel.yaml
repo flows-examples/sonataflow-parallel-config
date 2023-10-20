@@ -20,8 +20,8 @@ spec:
       - name: concatB
         operation: .result|=.+"B"
         type: expression
-      - name: concatC
-        operation: .result|=.+"C"
+      - name: concatD
+        operation: .result|=.+"D"
         type: expression
     start:
       stateName: Parallel
@@ -46,8 +46,8 @@ spec:
                   useResults: true
                 functionRef:
                   invoke: sync
-                  refName: concatC
-            name: branchC
+                  refName: concatD
+            name: branchD
         completionType: atLeast
         end:
           terminate: true
