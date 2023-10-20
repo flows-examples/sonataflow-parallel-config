@@ -57,7 +57,7 @@ spec:
   resources: {}
   podTemplate:
     container:
-      image: quay.io/ricardozanini/parallel:1.0
+      image: quay.io/ricardozanini/parallel:1.1
 status:
   address: {}
   lastTimeRecoverAttempt: null
